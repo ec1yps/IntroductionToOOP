@@ -29,8 +29,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{218242ae-d32a-4949-9601-e128841f9898}</ProjectGuid>
-    <RootNamespace>IntroductionToOOP</RootNamespace>
+    <ProjectGuid>{d0f94983-8167-406b-8ef7-44765e529fcd}</ProjectGuid>
+    <RootNamespace>Point</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
