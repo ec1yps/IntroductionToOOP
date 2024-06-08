@@ -4,6 +4,8 @@ using std::cout;
 using std::cin;
 using std::endl;
 
+#define delimiter "\n-------------------------------------------------------\n"
+
 class Point
 {
 	double x;
@@ -43,9 +45,23 @@ public:
 		this->y = y;
 		cout << "Constructor:\t\t" << this << endl;
 	}
+	Point(const Point& other)
+	{
+		this->x = other.x;
+		this->y = other.y;
+		cout << "CopyConstructor:\t" << this << endl;
+	}
 	~Point()
 	{
 		cout << "Destructor:\t\t" << this << endl;
+	}
+
+	Point& operator=(const Point& other)
+	{
+		this->x = other.x;
+		this->y = other.y;
+		cout << "CopyAssignment:\t\t" << this << endl;
+		return *this;
 	}
 
 	void print()const
@@ -53,7 +69,7 @@ public:
 		cout << "X = " << x << "\t" << "Y = " << y << endl;
 	}
 
-	double distance(Point other)
+	double distance(const Point& other)const
 	{
 		double x_distance = this->x - other.x;
 		double y_distance = this->y - other.y;
@@ -62,7 +78,7 @@ public:
 	}
 };
 
-double distance(Point A, Point B)
+double distance(const Point& A, const Point& B)
 {
 	double x_distance = A.get_x() - B.get_x();
 	double Y_distance = A.get_y() - B.get_y();
@@ -71,8 +87,9 @@ double distance(Point A, Point B)
 }
 
 //#define STRUCT_POINT
-#define CONSTRUCTORS_CHECK
+//#define CONSTRUCTORS_CHECK
 //#define DISTANCE_CHECK
+#define ASSIGNMENT_CHECK
 
 void main()
 {
@@ -100,6 +117,13 @@ void main()
 
 	Point C(2, 3);
 	C.print();
+
+	Point D = C;
+	D.print();
+
+	Point E;
+	E = D;
+	E.print();
 #endif // CONSTRUCTORS_CHECK
 
 #ifdef DISTANCE_CHECK
@@ -109,10 +133,31 @@ void main()
 	A.print();
 	B.print();
 
+	cout << delimiter << endl;
 	cout << "Рассотяние от точки 'A' до точки 'B': " << A.distance(B) << endl;
+	cout << delimiter << endl;
 	cout << "Рассотяние от точки 'B' до точки 'A': " << B.distance(A) << endl;
+	cout << delimiter << endl;
 	cout << "Рассотяние от точки 'A' до точки 'B': " << distance(A, B) << endl;
+	cout << delimiter << endl;
 	cout << "Рассотяние от точки 'B' до точки 'A': " << distance(B, A) << endl;
+	cout << delimiter << endl;
 #endif // DISTANCE_CHECK
+
+#ifdef ASSIGNMENT_CHECK
+	int a, b, c;
+	a = b = c = 0;
+	cout << a << "\t" << b << "\t" << c << endl;
+
+	Point A, B, C;
+
+	cout << delimiter << endl;
+	A = B = C = Point(2, 3);
+	cout << delimiter << endl;
+
+	A.print();
+	B.print();
+	C.print();
+#endif // ASSIGNMENT_CHECK
 
 }
