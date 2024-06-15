@@ -117,6 +117,7 @@ Fraction operator*(Fraction& left, Fraction& right)
 	result.set_denominator(left.get_denominator() * right.get_denominator());
 	return result;
 }
+
 /*Fraction operator+(const Fraction& left, const Fraction& right)
 {
 	Fraction result;
