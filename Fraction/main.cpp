@@ -132,7 +132,7 @@ public:
 	void print()const
 	{
 		if (integer) cout << integer;
-		if (numerator != 0)
+		if (numerator)
 		{
 			if (integer)cout << "(";
 			cout << numerator << "/" << denominator;
@@ -170,10 +170,11 @@ Fraction operator/(const Fraction& left, const Fraction& right)
 {
 	return left * right.inverted();
 }
-
-/*Fraction operator+(const Fraction& left, const Fraction& right)
+Fraction operator+( Fraction& left, Fraction& right)
 {
 	Fraction result;
+	left.to_improper();
+	right.to_improper();
 	if (left.get_denominator() == right.get_denominator())
 	{
 		result.set_numerator(left.get_numerator() + right.get_numerator());
@@ -186,9 +187,11 @@ Fraction operator/(const Fraction& left, const Fraction& right)
 	}
 	return result;
 }
-Fraction operator-(const Fraction& left, const Fraction& right)
+Fraction operator-(Fraction& left, Fraction& right)
 {
 	Fraction result;
+	left.to_improper();
+	right.to_improper();
 	if (left.get_denominator() == right.get_denominator())
 	{
 		result.set_numerator(left.get_numerator() - right.get_numerator());
@@ -200,22 +203,64 @@ Fraction operator-(const Fraction& left, const Fraction& right)
 		result.set_denominator(left.get_denominator() * right.get_denominator());
 	}
 	return result;
-}*/
-/*Fraction operator/(const Fraction& left, const Fraction& right)
+}
+
+bool operator==(Fraction left, Fraction right)
 {
-	Fraction result;
-	result.set_numerator(left.get_numerator() * right.get_denominator());
-	result.set_denominator(left.get_denominator() * right.get_numerator());
-	return result;
-}*/
+	left.to_improper();
+	right.to_improper();
+	return left.get_numerator() * right.get_denominator() == left.get_denominator() * right.get_numerator();
+}
+bool operator!=(const Fraction& left, const Fraction& right)
+{
+	return !(left == right);
+}
+bool operator>(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return left.get_numerator() * right.get_denominator() > left.get_denominator() * right.get_numerator();
+}
+bool operator<(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return left.get_numerator() * right.get_denominator() < left.get_denominator() * right.get_numerator();
+}
+bool operator>=(const Fraction& left, const Fraction& right)
+{
+	return !(left < right);
+}
+bool operator<=(const Fraction& left, const Fraction& right)
+{
+	return !(left > right);
+}
 
 std::ostream& operator<<(std::ostream& os, const Fraction& obj)
 {
-	return os << obj.get_integer() << "(" << obj.get_numerator() << "/" << obj.get_denominator() << ")";
+	if (obj.get_integer()) os << obj.get_integer();
+	if (obj.get_numerator())
+	{
+		if (obj.get_integer()) os << "(";
+		os << obj.get_numerator() << "/" << obj.get_denominator();
+		if (obj.get_integer()) os << ")";
+	}
+	else if (obj.get_integer() == 0) os << 0;
+	return os;
 } 
+std::istream& operator>>(std::istream& is, Fraction& obj)
+{
+	int integer, numerator, denominator;
+	cout << "Enter an integer: "; is >> integer; obj.set_integer(integer);
+	cout << "Enter the numerator: "; is >> numerator; obj.set_numerator(numerator);
+	cout << "Enter the denominator: "; is >> denominator; obj.set_denominator(denominator);
+	return is;
+}
 
 //#define CONSTRUCTORS_CHECK
 //#define ARITHMETICAL_OPERATORS_CHECK
+//#define COMPARISON_OPERATORS_CHECK
+#define	IO_OPERATORS_CHECK
 
 void main()
 {
@@ -255,4 +300,24 @@ void main()
 	A.print();
 #endif // ARITHMETICAL_OPERATORS_CHECK
 
+#ifdef COMPARISON_OPERATORS_CHECK
+	cout << (Fraction(1, 2) == Fraction(5, 10)) << endl;
+	cout << delimiter << endl;
+	cout << (Fraction(1, 3) != Fraction(5, 10)) << endl;
+	cout << delimiter << endl;
+	cout << (Fraction(4, 5) > Fraction(5, 10)) << endl;
+	cout << delimiter << endl;
+	cout << (Fraction(3, 5) < Fraction(3, 7)) << endl;
+	cout << delimiter << endl;
+	cout << (Fraction(2, 9) >= Fraction(3, 7)) << endl;
+	cout << delimiter << endl;
+	cout << (Fraction(4, 3) <= Fraction(3, 7)) << endl;
+	cout << delimiter << endl;
+#endif // COMPARISON_OPERATORS_CHECK
+
+#ifdef IO_OPERATORS_CHECK
+	Fraction A;
+	cin >> A;
+	cout << A << endl;
+#endif // INPUT_OPERATOR_CHECK
 }
