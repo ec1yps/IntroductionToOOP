@@ -1,4 +1,5 @@
-﻿#include <iostream>
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
 using namespace std;
 
 #define delimiter "---------------------------------------"
@@ -49,7 +50,7 @@ public:
 		set_denominator(1);
 		cout << "DefaultConstructor:\t" << this << endl;
 	}
-	Fraction(int integer)
+	explicit Fraction(int integer)
 	{
 		this->integer = integer;
 		this->numerator = 0;
@@ -70,6 +71,13 @@ public:
 		set_denominator(denominator);
 		cout << "Constructor:\t\t" << this << endl;
 	}
+	Fraction(const Fraction& other)
+	{
+		this->integer = other.integer;
+		this->numerator = other.numerator;
+		this->denominator = other.denominator;
+		cout << "CopyConstructor:\t\t" << this << endl;
+	}
 	~Fraction()
 	{
 		cout << "Destructor:\t\t" << this << endl;
@@ -79,8 +87,10 @@ public:
 
 	Fraction& operator=(const Fraction& other)
 	{
+		this->integer = other.integer;
 		this->numerator = other.numerator;
 		this->denominator = other.denominator;
+		cout << "CopyAssignment:\t\t" << this << endl;
 		return *this;
 	}
 	Fraction& operator*=(Fraction& other)
@@ -238,29 +248,49 @@ bool operator<=(const Fraction& left, const Fraction& right)
 
 std::ostream& operator<<(std::ostream& os, const Fraction& obj)
 {
-	if (obj.get_integer()) os << obj.get_integer();
+	if (obj.get_integer()) cout << obj.get_integer();
 	if (obj.get_numerator())
 	{
-		if (obj.get_integer()) os << "(";
-		os << obj.get_numerator() << "/" << obj.get_denominator();
-		if (obj.get_integer()) os << ")";
+		if (obj.get_integer())cout << "(";
+		cout << obj.get_numerator() << "/" << obj.get_denominator();
+		if (obj.get_integer())cout << ")";
 	}
-	else if (obj.get_integer() == 0) os << 0;
+	else if (obj.get_integer() == 0) cout << 0;
 	return os;
 } 
 std::istream& operator>>(std::istream& is, Fraction& obj)
 {
-	int integer, numerator, denominator;
-	cout << "Enter an integer: "; is >> integer; obj.set_integer(integer);
-	cout << "Enter the numerator: "; is >> numerator; obj.set_numerator(numerator);
-	cout << "Enter the denominator: "; is >> denominator; obj.set_denominator(denominator);
+	/*int integer, numerator, denominator;
+	is >> integer >> numerator >> denominator;
+	obj = Fraction(integer, numerator, denominator);
+	return is;*/
+	
+	const int SIZE = 256;
+	char buffer[SIZE] = {};
+	is.getline(buffer, SIZE);
+
+	int numbers[3] = {};
+	int n = 0;
+	const char delimiters[] = " /()";
+	for (char* pch = strtok(buffer, delimiters); pch; pch = strtok(NULL, delimiters))
+		numbers[n++] = atoi(pch);
+	//for (int i = 0; i < n; i++) cout << numbers[i] << "\t"; cout << endl;
+	switch (n)
+	{
+	case 1: obj = Fraction(numbers[0]); break;
+	case 2: obj = Fraction(numbers[0], numbers[1]); break;
+	case 3: obj = Fraction(numbers[0], numbers[1], numbers[2]); break;
+	}
+
 	return is;
 }
 
 //#define CONSTRUCTORS_CHECK
 //#define ARITHMETICAL_OPERATORS_CHECK
 //#define COMPARISON_OPERATORS_CHECK
-#define	IO_OPERATORS_CHECK
+//#define	IOSTREAM_CHECK
+//#define CONVERSIONS_FROM_OTHER_TO_CLASS
+#define CONVERSIONS_HOME_WORK
 
 void main()
 {
@@ -315,9 +345,33 @@ void main()
 	cout << delimiter << endl;
 #endif // COMPARISON_OPERATORS_CHECK
 
-#ifdef IO_OPERATORS_CHECK
+#ifdef IOSTREAM_CHECK
 	Fraction A;
+	cout << "Введите дробь: ";
 	cin >> A;
 	cout << A << endl;
 #endif // INPUT_OPERATOR_CHECK
+
+#ifdef CONVERSIONS_FROM_OTHER_TO_CLASS
+	Fraction A = (Fraction)5;
+	cout << A << endl;
+
+	cout << delimiter << endl;
+
+	Fraction B;
+
+	cout << delimiter << endl;
+	B = Fraction(8);
+	cout << delimiter << endl;
+
+	cout << B << endl;
+
+	cout << delimiter << endl;
+#endif // CONVERSIONS_FROM_OTHER_TO_CLASS
+
+#ifdef CONVERSIONS_HOME_WORK
+	Fraction A = 2.75;
+	cout << A << endl;
+#endif // CONVERSIONS_HOME_WORK
+
 }
