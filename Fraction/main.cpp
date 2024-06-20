@@ -57,6 +57,21 @@ public:
 		set_denominator(1);
 		cout << "SingleArgumentConstructor: " << this << endl;
 	}
+	Fraction(double integer)
+	{
+		this->integer = int(integer);
+		integer -= int(integer);
+		int n = 0;
+		while (true)
+		{
+			integer *= 10;
+			n++;
+			if (integer == (int)integer)break;
+		}
+		this->numerator=(integer);
+		set_denominator(pow(10,n));
+		cout << "Constructor:\t\t" << this << endl;
+	}
 	Fraction(int numerator, int denominator)
 	{
 		this->integer = 0;
@@ -288,7 +303,7 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 //#define CONSTRUCTORS_CHECK
 //#define ARITHMETICAL_OPERATORS_CHECK
 //#define COMPARISON_OPERATORS_CHECK
-//#define	IOSTREAM_CHECK
+//#define IOSTREAM_CHECK
 //#define CONVERSIONS_FROM_OTHER_TO_CLASS
 #define CONVERSIONS_HOME_WORK
 
@@ -350,7 +365,7 @@ void main()
 	cout << "Введите дробь: ";
 	cin >> A;
 	cout << A << endl;
-#endif // INPUT_OPERATOR_CHECK
+#endif // IOSTREAM_CHECK
 
 #ifdef CONVERSIONS_FROM_OTHER_TO_CLASS
 	Fraction A = (Fraction)5;
