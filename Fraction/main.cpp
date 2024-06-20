@@ -57,7 +57,7 @@ public:
 		set_denominator(1);
 		cout << "SingleArgumentConstructor: " << this << endl;
 	}
-	Fraction(double integer)
+	/*Fraction(double integer)
 	{
 		this->integer = int(integer);
 		integer -= int(integer);
@@ -70,7 +70,18 @@ public:
 		}
 		this->numerator=(integer);
 		set_denominator(pow(10,n));
+		reduce();
 		cout << "Constructor:\t\t" << this << endl;
+	}*/
+	Fraction(double decimal)
+	{
+		//decimal += 1e-10;
+		integer = decimal;
+		decimal -= integer;
+		denominator = 1e+9;
+		numerator = decimal * denominator + .5;
+		reduce();
+		cout << "DoubleConstructor:\t" << this << endl;
 	}
 	Fraction(int numerator, int denominator)
 	{
@@ -385,7 +396,7 @@ void main()
 #endif // CONVERSIONS_FROM_OTHER_TO_CLASS
 
 #ifdef CONVERSIONS_HOME_WORK
-	Fraction A = 2.75;
+	Fraction A = 3.333;
 	cout << A << endl;
 #endif // CONVERSIONS_HOME_WORK
 
