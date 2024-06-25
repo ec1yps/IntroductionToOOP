@@ -1,6 +1,9 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 using namespace std;
+using std::cout;
+using std::cin;
+using std::endl;
 
 #define delimiter "--------------------------------------------"
 
@@ -42,6 +45,15 @@ public:
 		for (int i = 0; i < size; i++) this->str[i] = other.str[i];
 		cout << "CopyConstructor:" << this << endl;
 	}
+	String(String&& other)noexcept
+	{
+		this->size = other.size;
+		this->str = other.str;
+
+		other.size = 0;
+		other.str = nullptr;
+		cout << "MoveConstructor:" << this << endl;
+	}
 	~String()
 	{
 		delete[] str;
@@ -51,6 +63,7 @@ public:
 	String& operator=(const String& other)
 	{
 		if (this == &other) return *this;
+		delete[] this->str;
 		this->size = other.size;
 		this->str = new char[size] {};
 		for (int i = 0; i < size; i++) this->str[i] = other.str[i];
@@ -78,9 +91,10 @@ public:
 	
 String operator+(const String& left, const String& right)
 {
-	cout << delimiter << endl;
+	//cout << delimiter << endl;
 	cout << "Operator + " << endl;
 	String buffer(left.get_size() + right.get_size() - 1);
+	//buffer.print();
 	for (int i = 0; i < left.get_size(); i++)
 	{
 		buffer[i] = left[i];
@@ -99,20 +113,23 @@ std::ostream& operator<<(std::ostream& os, const String& str)
 	return os << str.get_str();
 }
 
+//#define CONSTRUCTORS_CHECK
+
 void main()
 {
 	setlocale(LC_ALL, "");
 	
+#ifdef CONSTRUCTORS_CHECK
 	String str1;
 	str1.print();
-	
+
 	String str2(8);
 	str2.print();
-	
+
 	String str3 = "Hello";
 	str3 = str3;
 	str3.print();
-	
+
 	String str4 = "World";
 	str4.print();
 
@@ -125,4 +142,17 @@ void main()
 	cout << delimiter << endl;
 	cout << str5 << endl;
 	cout << delimiter << endl;
+#endif // CONSTRUCTORS_CHECK
+
+	String str1 = "Hello";
+	String str2 = "World";
+
+	cout << delimiter << endl;
+	String str3 = str1 + str2;
+	cout << str3 << endl;
+	cout << delimiter << endl;
+
+	cout << str1 << endl;
+	cout << str2 << endl;
+
 }
