@@ -6,78 +6,92 @@ using namespace std;
 
 class String
 {
-	int size = 0;
+	int size;
 	char* str;
 public:
 	int get_size()const
 	{
 		return size;
 	}
-	char* get_str()const
+	const char* get_str()const
 	{
 		return str;
 	}
-	void set_size(int size)
+	char* get_str()
 	{
-		this->size = size;
+		return str;
 	}
 
-	String()
-	{
-		size = 80;
-		str = new char[size] {};
-		cout << "DefaultConstructor:\t" << this << endl;
-	}
-	String(int size)
+	explicit String(int size = 80)
 	{
 		this->size = size;
-		str = new char[size] {};
-		cout << "SingleArgConstructor:\t" << this << endl;
+		this->str = new char[size] {};
+		cout << "Constructor:\t" << this << endl;
 	}
-	String(const char* other)
+	String(const char str[])
 	{
-		size = strlen(other) + 1;
-		str = new char[size] {};
-		strcpy(str, other);
-		cout << "Constructor:\t\t" << this << endl;
+		this->size = strlen(str) + 1;
+		this->str = new char[size] {};
+		strcpy(this->str, str);
+		cout << "Constructor:\t" << this << endl;
+	}
+	String(const String& other)
+	{
+		this->size = other.size;
+		this->str = new char[size] {};
+		for (int i = 0; i < size; i++) this->str[i] = other.str[i];
+		cout << "CopyConstructor:" << this << endl;
 	}
 	~String()
 	{
 		delete[] str;
-		cout << "Destructor:\t\t" << this << endl;
+		cout << "Destructor:\t" << this << endl;
 	}
 
 	String& operator=(const String& other)
 	{
-		delete[] str;
-		this->size = other.get_size();
-		this->str = other.get_str();
-		for (int i = 0; i < size; i++)
-			this->str[i] = other.get_str()[i];
-		cout << "CopyAssignment:\t" << endl;
+		if (this == &other) return *this;
+		this->size = other.size;
+		this->str = new char[size] {};
+		for (int i = 0; i < size; i++) this->str[i] = other.str[i];
+		cout << "CopyAssignment:\t" << this << endl;
 		return *this;
+	}
+	char& operator[](int i)
+	{
+		return str[i];
+	}
+	const char& operator[](int i)const
+	{
+		return str[i];
 	}
 
 	void print()
 	{
-		cout << "size:\t" << this->size << endl;
-		cout << "str:\t" << this->str << endl;
+		cout << "Obj:\t\t" << this << endl;
+		cout << "Size:\t\t" << size << endl;
+		cout << "Addr:\t\t" << &str << endl;
+		cout << "Str:\t\t" << str << endl;
+		cout << delimiter << endl;
 	}
-
 };
 	
 String operator+(const String& left, const String& right)
 {
-	String result = left.get_size() + right.get_size() - 1;
+	cout << delimiter << endl;
+	cout << "Operator + " << endl;
+	String buffer(left.get_size() + right.get_size() - 1);
 	for (int i = 0; i < left.get_size(); i++)
 	{
-		result.get_str()[i] = left.get_str()[i];
+		buffer[i] = left[i];
+		//buffer.get_str()[i] = left.get_str()[i];
 	}
 	for (int i = 0; i < right.get_size(); i++)
 	{
-		result.get_str()[i + left.get_size() - 1] = right.get_str()[i];
+		buffer[i + left.get_size() - 1] = right[i];
+		//buffer.get_str()[i + left.get_size() - 1] = right.get_str()[i];
 	}
-	return result;
+	return buffer;
 }
 
 std::ostream& operator<<(std::ostream& os, const String& str)
@@ -91,23 +105,24 @@ void main()
 	
 	String str1;
 	str1.print();
-	cout << delimiter << endl;
-
+	
 	String str2(8);
 	str2.print();
-	cout << delimiter << endl;
-
+	
 	String str3 = "Hello";
-	cout << str3 << endl;
-	cout << delimiter << endl;
-
+	str3 = str3;
+	str3.print();
+	
 	String str4 = "World";
-	cout << str4 << endl;
-	cout << delimiter << endl;
+	str4.print();
 
-	String str5 = str3 + " " + str4;
-	/*String str5;
-	str5 = str3 + str4;*/
+	cout << str3 << endl;
+	cout << str4 << endl;
+
+	//String str5 = str3 + str4;
+	String str5;
+	str5 = str3 + str4;
+	cout << delimiter << endl;
 	cout << str5 << endl;
 	cout << delimiter << endl;
 }
