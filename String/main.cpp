@@ -70,6 +70,17 @@ public:
 		cout << "CopyAssignment:\t" << this << endl;
 		return *this;
 	}
+	String& operator=(String&& other) noexcept
+	{
+		if (this == &other) return *this;
+		delete[] this->str;
+		this->size = other.size;
+		this->str = other.str;
+		other, size = 0;
+		other.str = nullptr;
+		cout << "MoveAssignment:\t" << this << endl;
+		return *this;
+	}
 	char& operator[](int i)
 	{
 		return str[i];
@@ -114,6 +125,8 @@ std::ostream& operator<<(std::ostream& os, const String& str)
 }
 
 //#define CONSTRUCTORS_CHECK
+//#define OPERATOR_PLUS_CHECK
+#define MOVE_ASSIGNMENT_CHECK
 
 void main()
 {
@@ -144,6 +157,7 @@ void main()
 	cout << delimiter << endl;
 #endif // CONSTRUCTORS_CHECK
 
+#ifdef OPERATOR_PLUS_CHECK
 	String str1 = "Hello";
 	String str2 = "World";
 
@@ -152,7 +166,25 @@ void main()
 	cout << str3 << endl;
 	cout << delimiter << endl;
 
+	str1 = str2;
+
 	cout << str1 << endl;
 	cout << str2 << endl;
+#endif // OPERATOR_PLUS_CHECK
 
+#ifdef MOVE_ASSIGNMENT_CHECK
+	String str1 = "Hello";
+	String str2 = "World";
+	String str3;
+	cout << delimiter << endl;
+	str3 = str1 + str2;
+	cout << delimiter << endl;
+	cout << str3 << endl;
+	cout << delimiter << endl;
+
+	String str4;
+	str4 = std::move(str3);
+	cout << str4 << endl;
+	cout << delimiter << endl;
+#endif // MOVE_ASSIGNMENT_CHECK
 }
