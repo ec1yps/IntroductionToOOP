@@ -29,7 +29,7 @@ public:
 	{
 		this->size = size;
 		this->str = new char[size] {};
-		cout << "Constructor:\t" << this << endl;
+		cout << "DefaultConstructor:" << this << endl;
 	}
 	String(const char str[])
 	{
@@ -70,7 +70,7 @@ public:
 		cout << "CopyAssignment:\t" << this << endl;
 		return *this;
 	}
-	String& operator=(String&& other) noexcept
+	String& operator=(String&& other)noexcept
 	{
 		if (this == &other) return *this;
 		delete[] this->str;
@@ -162,7 +162,8 @@ void main()
 	String str2 = "World";
 
 	cout << delimiter << endl;
-	String str3 = str1 + str2;
+	String str3;
+	str3= str1 + str2;
 	cout << str3 << endl;
 	cout << delimiter << endl;
 
