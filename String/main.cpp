@@ -31,18 +31,18 @@ public:
 		//this->str = new char[size] {};
 		cout << "DefaultConstructor:" << this << endl;
 	}
-	String(const char str[]) :size(strlen(str) + 1), str(new char[size] {})
+	String(const char str[]) :String(strlen(str) + 1)
 	{
 		//this->size = strlen(str) + 1;
 		//this->str = new char[size] {};
 		strcpy(this->str, str);
 		cout << "Constructor:\t" << this << endl;
 	}
-	String(const String& other) :size(other.size), str(new char[size] {})
+	String(const String& other) :String(other.str)
 	{
 		//this->size = other.size;
 		//this->str = new char[size] {};
-		for (int i = 0; i < size; i++) this->str[i] = other.str[i];
+		//for (int i = 0; i < size; i++) this->str[i] = other.str[i];
 		cout << "CopyConstructor:" << this << endl;
 	}
 	String(String&& other)noexcept :size(other.size), str(other.str)
@@ -126,8 +126,8 @@ std::ostream& operator<<(std::ostream& os, const String& str)
 
 //#define CONSTRUCTORS_CHECK
 //#define OPERATOR_PLUS_CHECK
-#define MOVE_ASSIGNMENT_CHECK
-//#define CALLING_CONSTRUCTORS
+//#define MOVE_ASSIGNMENT_CHECK
+#define CALLING_CONSTRUCTORS
 
 void main()
 {
