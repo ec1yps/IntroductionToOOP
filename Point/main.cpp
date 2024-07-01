@@ -1,36 +1,4 @@
-﻿#include <iostream>
-using namespace std;
-
-double Distance(double a, double b);
-
-class Point
-{
-	double x;
-	double y;
-
-public:
-	double get_x()const
-	{
-		return x;
-	}
-	double get_y()const
-	{
-		return y;
-	}
-	void set_x(double x)
-	{
-		this->x = x;
-	}
-	void set_y(double y)
-	{
-		this->y = y;
-	}
-
-	double distance(double x, double y)
-	{
-		return sqrt(x * x + y * y);
-	}
-};
+﻿#include "Point.h"
 
 void main()
 {
@@ -47,10 +15,4 @@ void main()
 	cout << "Расстояние до второй точки: " << B.distance(a, b) << endl;
 
 	cout << "Расстояник между точками: " << Distance(A.distance(x, y), B.distance(a, b)) << endl;
-}
-
-double Distance(double a, double b)
-{
-	if (a > b) return a - b;
-	else return b - a;
 }
